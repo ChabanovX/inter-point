@@ -1,1 +1,0 @@
-print_lpp_solution(res_simplex)
