@@ -24,36 +24,25 @@ def interior_point(lpp: dict) -> tuple:
     x = np.hstack((np.ones(n_vars), rhs - np.sum(a_constraints, axis=1)))
     # Extend A with identity matrix to add slack variables
     a_constraints = np.hstack((a_constraints, np.eye(n_constraints)))
-
     # Extend C with zeros for slack variables
     c_objective = np.hstack((c_objective, np.zeros(n_constraints))) * (1 if maximize else -1)
     while True:
         D = np.diag(x)
-
         a_tilde = a_constraints @ D 
         c_tilde = D @ c_objective 
-
         try:
             a_tilde_inv = inv(a_tilde @ a_tilde.T)
             P = np.identity(len(c_objective)) - a_tilde.T @ a_tilde_inv @ a_tilde
         except np.linalg.LinAlgError:
             print("Some dumb error. try increasing step size or decreasing precision :P")
-            return None
-
+            exit(1)
         c_p = P @ c_tilde
-
-        if np.all(c_p >= 0): 
-            break
-
         nu = abs(np.min(c_p[c_p < 0]))
-
         x_tilde = np.ones(len(c_objective)) + (alpha / nu) * c_p
         x_star = D @ x_tilde
-
         # Exit condition
         if np.linalg.norm(x_star - x) <= precision:
             break
-        
         x = x_star
 
     # Calculate the objective function value
@@ -74,8 +63,6 @@ def simplex(lpp: dict) -> tuple:
     rhs: np.ndarray = np.array(lpp["b"], dtype=float)
     precision: float = lpp["e"]
     maximize: bool = lpp["max"]
-
-    print_lpp(lpp)
 
     n_constraints: int = len(constraints)
     n_vars: int = len(c_objective)
@@ -158,16 +145,15 @@ def print_lpp(lpp: dict) -> None:
     print(str_problem[:-1])
     
 
-def print_lpp_solution(res: tuple, precision: float) -> None:
-    d_places = abs(int(math.log10(precision)))
-    output_str: str = f"z = {res[-1]:.{d_places}g},\n"
+def print_lpp_solution(res: tuple) -> None:
+    output_str: str = f"z = {res[-1]:g},\n"
     for i, value in res[0]:
-        output_str += f"x{i + 1} = {value:.{d_places}g},\n"
+        output_str += f"x{i + 1} = {value:g},\n"
     output_str = output_str[:-2]
     print(output_str)
 
 lpp = {
-    "max": True,         # max or min - True or False
+    "max": False,         # max or min - True or False
     "C": [-2, 2, -6],     # C - objective function coefficients
     "A": [                # A - constraint coefficients matrix
         [2, 1, -2],
@@ -175,18 +161,21 @@ lpp = {
         [1, -1, 2],
     ],                    
     "b": [24, 23, 10],    # b - rhs of constraints
-    "e": 0.001,           # e - precision
-    "a": 0.2              # alpha - step size
+    "e": 1e-4,            # e - precision
+    "a": 0.5              # alpha - step size
 }
 
-res_simplex = simplex(lpp)
+print_lpp(lpp)
 
-print("_______________")
+print("____________________")
 print("Simplex algorithm result:")
-print_lpp_solution(res_simplex, lpp["e"])
+print_lpp_solution(simplex(lpp))
 
-res_inner_point = interior_point(lpp)
+print("_____________________")
+print("Interior-point algorithm (a=0.5) result:")
+print_lpp_solution(interior_point(lpp))
 
-print("________________")
-print("Interior-point algorithm result:")
-print_lpp_solution(res_inner_point, lpp["e"])
+lpp["a"] = 0.9
+print("_____________________")
+print("Interior-point algorithm (a=0.9) result:")
+print_lpp_solution(interior_point(lpp))
