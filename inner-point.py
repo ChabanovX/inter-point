@@ -143,7 +143,7 @@ def simplex(lpp: dict) -> tuple:
 
 def print_lpp(lpp: dict) -> None:
     max, c_objective, constraints, rhs, *_ = lpp.values()
-    str_problem: str = f"problem:\n{'max' if max else 'min'} z = {c_objective[0]:g} * x1"
+    str_problem: str = f"Problem:\n{'Max' if max else 'Min'} z = {c_objective[0]:g} * x1"
     for i, coefficient in enumerate(c_objective[1:]):
         if coefficient == 0:
             term = ""
@@ -152,7 +152,7 @@ def print_lpp(lpp: dict) -> None:
         else:
             term = f" + {coefficient:g} * x{i + 2}"
         str_problem += term
-    str_problem += "\nsubject to the constraints:\n"
+    str_problem += "\nSubject to the constraints:\n"
     for i, coefficients in enumerate(constraints):
         for j, coefficient in enumerate(coefficients):
             str_problem += f"{coefficient:g} * x{j + 1} + "
@@ -174,16 +174,16 @@ def print_lpp_solution(res: tuple) -> None:
     print(output_str)
 
 lpp = {
-    "max": False,          # max or min - True or False
+    "max": False,         # max or min - True or False
     "C": [-2, 2, -6],     # C - objective function coefficients
     "A": [                # A - constraint coefficients matrix
         [2, 1, -2],
         [1, 2, 4],
         [1, -1, 2],
     ],                    
-    "b": [24, 23, 10],   # b - rhs of constraints
-    "e": 0.001,             # e - precision
-    "a": 0.2
+    "b": [24, 23, 10],    # b - rhs of constraints
+    "e": 0.001,           # e - precision
+    "a": 0.2              # alpha - step size
 }
 
 res_simplex = simplex(lpp)
