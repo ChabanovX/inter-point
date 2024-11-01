@@ -1,7 +1,3 @@
-Based on the requirements outlined in your programming task document, here is a suggested README file for your project in Python.
-
----
-
 # Linear Programming Solver using Interior-Point Algorithm
 
 This project implements an Interior-Point algorithm to solve Linear Programming Problems (LPP). The solution follows the specifications outlined in Programming Task 2 for the Fall 2024 Introduction to Optimization course at Innopolis University.
