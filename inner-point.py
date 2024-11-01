@@ -1,13 +1,9 @@
-import math
 import numpy as np
 from numpy.linalg import inv
 
 np.set_printoptions(suppress=True)
 # ignore division by zero errors, as we need to get infinities
 np.seterr(divide='ignore')
-
-def sign(n):
-    return '+' if n > 0 else '-'
 
 def interior_point(lpp: dict) -> tuple:
     c_objective = np.array(lpp["C"], dtype=float)
@@ -26,6 +22,7 @@ def interior_point(lpp: dict) -> tuple:
     a_constraints = np.hstack((a_constraints, np.eye(n_constraints)))
     # Extend C with zeros for slack variables
     c_objective = np.hstack((c_objective, np.zeros(n_constraints))) * (1 if maximize else -1)
+    
     while True:
         D = np.diag(x)
         a_tilde = a_constraints @ D 
@@ -34,7 +31,7 @@ def interior_point(lpp: dict) -> tuple:
             a_tilde_inv = inv(a_tilde @ a_tilde.T)
             P = np.identity(len(c_objective)) - a_tilde.T @ a_tilde_inv @ a_tilde
         except np.linalg.LinAlgError:
-            print("Some dumb error. try increasing step size or decreasing precision :P")
+            print("Some dumb error. Try increasing step size or decreasing precision :P")
             exit(1)
         c_p = P @ c_tilde
         nu = abs(np.min(c_p[c_p < 0]))
@@ -115,7 +112,7 @@ def simplex(lpp: dict) -> tuple:
 
         if (degenerate):
             print("Degenerate solution!")
-            break
+            exit(1)
     
     solution_indexes_values = []
     
@@ -133,6 +130,7 @@ def simplex(lpp: dict) -> tuple:
     return solution_indexes_values, z_value
 
 def print_lpp(lpp: dict) -> None:
+    sign = lambda n: '-' if n < 0 else '+'
     max, c_objective, constraints, rhs, *_ = lpp.values()
     str_problem: str = f"Problem:\n{'Max' if max else 'Min'} z = "
     z_row = ' '.join(f'{sign(r)} {abs(r)}x{i + 1}' if r not in (-1, 1) else f'{sign(r)}x{i + 1}' for i, r in enumerate(c_objective))
@@ -161,7 +159,7 @@ lpp = {
         [1, -1, 2],
     ],                    
     "b": [24, 23, 10],    # b - rhs of constraints
-    "e": 1e-1,            # e - precision
+    "e": 1e-4,            # e - precision
     "a": 0.5              # alpha - step size
 }
 
