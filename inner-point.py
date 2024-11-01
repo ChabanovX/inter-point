@@ -5,6 +5,9 @@ np.set_printoptions(suppress=True)
 # ignore division by zero errors, as we need to get infinities
 np.seterr(divide='ignore')
 
+def sign(n):
+    return '+' if n > 0 else '-'
+
 def interior_point(lpp: dict) -> tuple:
     c_objective = np.array(lpp["C"], dtype=float)
     a_constraints = np.array(lpp["A"], dtype=float)
@@ -143,31 +146,19 @@ def simplex(lpp: dict) -> tuple:
 
 def print_lpp(lpp: dict) -> None:
     max, c_objective, constraints, rhs, *_ = lpp.values()
-    str_problem: str = f"Problem:\n{'Max' if max else 'Min'} z = {c_objective[0]:g} * x1"
-    for i, coefficient in enumerate(c_objective[1:]):
-        if coefficient == 0:
-            term = ""
-        elif coefficient < 0:
-            term = f" - {abs(coefficient):g} * x{i + 2}"
-        else:
-            term = f" + {coefficient:g} * x{i + 2}"
-        str_problem += term
-    str_problem += "\nSubject to the constraints:\n"
-    for i, coefficients in enumerate(constraints):
-        for j, coefficient in enumerate(coefficients):
-            str_problem += f"{coefficient:g} * x{j + 1} + "
-        str_problem = str_problem[:-3] + f" {'<=' if max else '>='} {rhs[i]:g}\n"
+    str_problem: str = f"Problem:\n{'Max' if max else 'Min'} z = "
+    z_row = ' '.join(f'{sign(r)} {abs(r)}x{i + 1}' if r not in (-1, 1) else f'{sign(r)}x{i + 1}' for i, r in enumerate(c_objective))
+    z_row = z_row[2:] if z_row.startswith('+') else f'-{z_row[2:]}'
+    str_problem += z_row + "\nSubject to the constraints:\n"
+    for row, sol in zip(constraints, rhs):
+        lhs = ' '.join(f'{sign(r)} {abs(r)}x{i + 1}' if r not in (-1, 1) else f'{sign(r)} x{i + 1}' for i, r in enumerate(row))
+        lhs = lhs[2:] if lhs.startswith('+') else f'-{lhs[2:]}'
+        str_problem += f"{lhs} {'<=' if max else '>='} {sol}\n"
     print(str_problem[:-1])
-
+    
 
 def print_lpp_solution(res: tuple) -> None:
-    if res is None:
-        return
-    output_str: str = f"z = {res[-1]:g}"
-    if len(res) == 1:
-        print(output_str)
-        return
-    output_str += ',\n'
+    output_str: str = f"z = {res[-1]:g},\n"
     for i, value in res[0]:
         output_str += f"x{i + 1} = {value:g},\n"
     output_str = output_str[:-2]
@@ -189,11 +180,11 @@ lpp = {
 res_simplex = simplex(lpp)
 
 print("_______________")
-print("Simplex algorithm:")
+print("Simplex algorithm result:")
 print_lpp_solution(res_simplex)
 
 res_inner_point = interior_point(lpp)
 
 print("________________")
-print("Interior-point algorithm:")
+print("Interior-point algorithm result:")
 print_lpp_solution(res_inner_point)
