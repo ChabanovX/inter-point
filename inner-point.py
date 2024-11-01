@@ -1,3 +1,4 @@
+import math
 import numpy as np
 from numpy.linalg import inv
 
@@ -157,15 +158,16 @@ def print_lpp(lpp: dict) -> None:
     print(str_problem[:-1])
     
 
-def print_lpp_solution(res: tuple) -> None:
-    output_str: str = f"z = {res[-1]:g},\n"
+def print_lpp_solution(res: tuple, precision: float) -> None:
+    d_places = abs(int(math.log10(precision)))
+    output_str: str = f"z = {res[-1]:.{d_places}g},\n"
     for i, value in res[0]:
-        output_str += f"x{i + 1} = {value:g},\n"
+        output_str += f"x{i + 1} = {value:.{d_places}g},\n"
     output_str = output_str[:-2]
     print(output_str)
 
 lpp = {
-    "max": False,         # max or min - True or False
+    "max": True,         # max or min - True or False
     "C": [-2, 2, -6],     # C - objective function coefficients
     "A": [                # A - constraint coefficients matrix
         [2, 1, -2],
@@ -181,10 +183,10 @@ res_simplex = simplex(lpp)
 
 print("_______________")
 print("Simplex algorithm result:")
-print_lpp_solution(res_simplex)
+print_lpp_solution(res_simplex, lpp["e"])
 
 res_inner_point = interior_point(lpp)
 
 print("________________")
 print("Interior-point algorithm result:")
-print_lpp_solution(res_inner_point)
+print_lpp_solution(res_inner_point, lpp["e"])
