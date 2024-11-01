@@ -13,7 +13,6 @@ def interior_point(lpp: dict) -> tuple:
     maximize = lpp["max"]
     alpha = lpp["a"]
     
-
     # Number of constraints and original variables
     n_constraints = a_constraints.shape[0]
     n_vars = a_constraints.shape[1]
@@ -25,39 +24,32 @@ def interior_point(lpp: dict) -> tuple:
     # Extend C with zeros for slack variables
     c_objective = np.hstack((c_objective, np.zeros(n_constraints))) * (1 if maximize else -1)
     while True:
-        # Diagonal matrix D of the current solution x
         D = np.diag(x)
 
-        # Calculate a_tilde and c_tilde
-        a_tilde = a_constraints @ D  # Using @ for matrix multiplication
-        c_tilde = D @ c_objective     # Using @ for matrix multiplication
+        a_tilde = a_constraints @ D 
+        c_tilde = D @ c_objective 
 
-        # Calculate projection matrix P
         try:
             a_tilde_inv = inv(a_tilde @ a_tilde.T)
             P = np.identity(len(c_objective)) - a_tilde.T @ a_tilde_inv @ a_tilde
         except np.linalg.LinAlgError:
-            print("Matrix is singular, cannot compute inverse.")
+            print("Some dumb error. try increasing step size or decreasing precision :P")
             return None
 
-        # Calculate reduced costs c_p
         c_p = P @ c_tilde
 
-        # Check if optimal solution is found
-        if np.all(c_p >= 0):  # If all entries are non-negative, optimal solution found
+        if np.all(c_p >= 0): 
             break
 
-        # Calculate nu
         nu = abs(np.min(c_p[c_p < 0]))
 
-        # Calculate x_tilde and x_star
         x_tilde = np.ones(len(c_objective)) + (alpha / nu) * c_p
         x_star = D @ x_tilde
 
-        # Check for convergence
+        # Exit condition
         if np.linalg.norm(x_star - x) <= precision:
             break
-
+        
         x = x_star
 
     # Calculate the objective function value
