@@ -161,7 +161,7 @@ lpp = {
         [1, -1, 2],
     ],                    
     "b": [24, 23, 10],    # b - rhs of constraints
-    "e": 1e-4,            # e - precision
+    "e": 1e-1,            # e - precision
     "a": 0.5              # alpha - step size
 }
 
