@@ -275,9 +275,9 @@ print_lpp_solution(interior_point(lpp))
 # Problem:
 # Min z = -2x1 + 2x2 - 6x3
 # Subject to the constraints:
-# 2x1 + x2 - 2x3 >= 24
-# x1 + 2x2 + 4x3 >= 23
-# x1 - x2 + 2x3 >= 10
+# 2x1 + x2 - 2x3 <= 24
+# x1 + 2x2 + 4x3 <= 23
+# x1 - x2 + 2x3 <= 10
 # ____________________
 # Simplex algorithm result:
 # z = -30.75,
