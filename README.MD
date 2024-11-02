@@ -71,7 +71,7 @@ python main.py
 This project also includes a comparison of results obtained by the Interior-Point algorithm with those achieved using the Simplex Method from Task 1. 
 
 ## Contributors
-This project is developed by [Team Name], working collaboratively on the solution. Individual contributions and ratings are documented in the report.
+This project is developed by the team from B23-DSAI-03, working collaboratively on the solution. Individual contributions and ratings are documented in the report.
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
