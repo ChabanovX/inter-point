@@ -26,8 +26,8 @@ This project is a continuation from Programming Task 1, extending our previous L
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone <repository_link>
-   cd <repository_directory>
+   git clone https://github.com/ChabanovX/inter-point.git
+   cd inter-point
    ```
 2. Install required libraries (if any):
    ```bash
