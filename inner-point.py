@@ -150,6 +150,7 @@ def print_lpp_solution(res: tuple) -> None:
     output_str = output_str[:-2]
     print(output_str)
 
+
 lpp = {
     "max": False,         # max or min - True or False
     "C": [-2, 2, -6],     # C - objective function coefficients
@@ -228,41 +229,41 @@ print_lpp_solution(interior_point(lpp))
 
 # Output:
 
-#``Problem:
-# Max z = 5x1 + 4x2
+# Problem:
+# Max z = 10x1 + 20x2
 # Subject to the constraints:
-# 6x1 + 4x2 <= 24
-# x1 + 2x2 <= 6
-# -x1 + x2 <= 1
+# -x1 + 2x2 <= 15
+# x1 + x2 <= 12
+# 5x1 + 3x2 <= 45
 # ____________________
 # Simplex algorithm result:
-# z = 21,
+# z = 210,
 # x1 = 3,
-# x2 = 1.5
+# x2 = 9
 # _____________________
 # Interior-point algorithm (a=0.5) result:
-# z = 20.9999,
-# x1 = 3.00002,
-# x2 = 1.49996
+# z = 209.999,
+# x1 = 3.00003,
+# x2 = 8.99994
 # _____________________
 # Interior-point algorithm (a=0.9) result:
-# z = 20.9999,
-# x1 = 3,
-# x2 = 1.49997
+# z = 210,
+# x1 = 3.00002,
+# x2 = 8.99998
 
 # CODE:
 
 # lpp = {
-#     "max": True,          # max or min - True or False
-#     "C": [5, 4],       # C - objective function coefficients
+#     "max": True,         # max or min - True or False
+#     "C": [10, 20],     # C - objective function coefficients
 #     "A": [                # A - constraint coefficients matrix
-#         [6, 4],
-#         [1, 2],
-#         [-1, 1],
+#         [-1, 2],
+#         [1, 1],
+#         [5, 3],
 #     ],                    
-#     "b": [24, 6, 1],      # b - rhs of constraints
+#     "b": [15, 12, 45],    # b - rhs of constraints
 #     "e": 1e-4,            # e - precision
-#     "a": 0.5
+#     "a": 0.5              # alpha - step size
 # }
 
 #------------------------------------------------------------------------------
