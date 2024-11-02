@@ -177,3 +177,205 @@ lpp["a"] = 0.9
 print("_____________________")
 print("Interior-point algorithm (a=0.9) result:")
 print_lpp_solution(interior_point(lpp))
+
+
+#------------------------------------------------------------------------------
+
+# TEST CASE 1
+
+# Output:
+
+# Problem:
+# Max z = 5x1 + 4x2
+# Subject to the constraints:
+# 6x1 + 4x2 <= 24
+# x1 + 2x2 <= 6
+# -x1 + x2 <= 1
+# ____________________
+# Simplex algorithm result:
+# z = 21,
+# x1 = 3,
+# x2 = 1.5
+# _____________________
+# Interior-point algorithm (a=0.5) result:
+# z = 20.9999,
+# x1 = 3.00002,
+# x2 = 1.49996
+# _____________________
+# Interior-point algorithm (a=0.9) result:
+# z = 20.9999,
+# x1 = 3,
+# x2 = 1.49997
+
+# CODE:
+
+# lpp = {
+#     "max": True,          # max or min - True or False
+#     "C": [5, 4],       # C - objective function coefficients
+#     "A": [                # A - constraint coefficients matrix
+#         [6, 4],
+#         [1, 2],
+#         [-1, 1],
+#     ],                    
+#     "b": [24, 6, 1],    # b - rhs of constraints
+#     "e": 1e-4,           # e - precision
+#     "a": 0.5  
+# }
+
+#------------------------------------------------------------------------------
+
+# TEST CASE 2
+
+# Output:
+
+#``Problem:
+# Max z = 5x1 + 4x2
+# Subject to the constraints:
+# 6x1 + 4x2 <= 24
+# x1 + 2x2 <= 6
+# -x1 + x2 <= 1
+# ____________________
+# Simplex algorithm result:
+# z = 21,
+# x1 = 3,
+# x2 = 1.5
+# _____________________
+# Interior-point algorithm (a=0.5) result:
+# z = 20.9999,
+# x1 = 3.00002,
+# x2 = 1.49996
+# _____________________
+# Interior-point algorithm (a=0.9) result:
+# z = 20.9999,
+# x1 = 3,
+# x2 = 1.49997
+
+# CODE:
+
+# lpp = {
+#     "max": True,          # max or min - True or False
+#     "C": [5, 4],       # C - objective function coefficients
+#     "A": [                # A - constraint coefficients matrix
+#         [6, 4],
+#         [1, 2],
+#         [-1, 1],
+#     ],                    
+#     "b": [24, 6, 1],      # b - rhs of constraints
+#     "e": 1e-4,            # e - precision
+#     "a": 0.5
+# }
+
+#------------------------------------------------------------------------------
+
+# TEST CASE 3
+
+# Output:
+
+# Problem:
+# Min z = -2x1 + 2x2 - 6x3
+# Subject to the constraints:
+# 2x1 + x2 - 2x3 >= 24
+# x1 + 2x2 + 4x3 >= 23
+# x1 - x2 + 2x3 >= 10
+# ____________________
+# Simplex algorithm result:
+# z = -30.75,
+# x2 = 0.75,
+# x3 = 5.375
+# _____________________
+# Interior-point algorithm (a=0.5) result:
+# z = -30.7499,
+# x2 = 0.749986,
+# x3 = 5.37497
+# _____________________
+# Interior-point algorithm (a=0.9) result:
+# z = -30.7499,
+# x2 = 0.75,
+# x3 = 5.37497
+
+# CODE:
+
+# lpp = {
+#     "max": False,          # max or min - True or False
+#     "C": [-2, 2, -6],     # C - objective function coefficients
+#     "A": [                # A - constraint coefficients matrix
+#         [2, 1, -2],
+#         [1, 2, 4],
+#         [1, -1, 2],
+#     ],                    
+#     "b": [24, 23, 10],    # b - rhs of constraints
+#     "e": 1e-4,            # e - precision
+#     "a": 0.5
+# }
+
+#------------------------------------------------------------------------------
+
+# TEST CASE 4
+
+# Output:
+
+# Problem:
+# Max z = 9x1 + 10x2 + 16x3
+# Subject to the constraints:
+# 18x1 + 15x2 + 12x3 <= 360
+# 6x1 + 4x2 + 8x3 <= 192
+# 5x1 + 3x2 + 3x3 <= 180
+# ____________________
+# Simplex algorithm result:
+# z = 400,
+# x2 = 8,
+# x3 = 20
+# _____________________
+# Interior-point algorithm (a=0.5) result:
+# z = 400,
+# x2 = 7.99998,
+# x3 = 20
+# _____________________
+# Interior-point algorithm (a=0.9) result:
+# z = 400,
+# x2 = 8,
+# x3 = 20
+
+# CODE:
+
+# lpp = {
+#     "max": True,          # max or min - True or False
+#     "C": [9, 10, 16],       # C - objective function coefficients
+#     "A": [                # A - constraint coefficients matrix
+#         [18, 15, 12],
+#         [6, 4, 8],
+#         [5, 3, 3],
+#     ],                    
+#     "b": [360, 192, 180], # b - rhs of constraints
+#     "e": 1e-4,            # e - precision
+#     "a": 0.5
+# }
+
+#------------------------------------------------------------------------------
+
+# TEST CASE 5
+
+# Output:
+
+# Problem:
+# Max z = 2x1 +x2
+# Subject to the constraints:
+# x1 - x2 <= 10
+# 2x1 + 0x2 <= 40
+# ____________________
+# Simplex algorithm result:
+# Unbounded problem!
+
+# CODE:
+
+# lpp = {
+#     "max": True,          # max or min - True or False
+#     "C": [2, 1],       # C - objective function coefficients
+#     "A": [                # A - constraint coefficients matrix
+#         [1, -1],
+#         [2, 0],
+#     ],                    
+#     "b": [10, 40],        # b - rhs of constraints
+#     "e": 1e-4,            # e - precision
+#     "a": 0.5
+# }
