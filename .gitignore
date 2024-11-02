@@ -1,2 +1,68 @@
-.dist
+# LaTeX generated files
+*.aux
+*.bbl
+*.blg
+*.brf
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.out
+*.toc
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.ist
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.pdfsync
+*.dvi
+*.ps
+*.eps
+*.run.xml
+*.bcf
+*.blx.bib
+*.dist
+
+# Temporary files
+*.nav
+*.snm
+*.vrb
+*.spl
+
+
+# Backup files
+*~
+*.bak
+*.sav
+*.bkp
+*.tmp
+*.backup
+
+# VSCode settings
+.vscode/
+.history/
 tempCodeRunnerFile.py
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Project specific
+*.cls
+*.sty
+*.acn
+*.glo
+*.ist
+*.lof
+*.lot
+*.maf
+*.mtc
+*.slg
+*.synctex(busy)
